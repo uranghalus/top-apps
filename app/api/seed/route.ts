@@ -14,7 +14,7 @@ export async function GET() {
 
     // Seed Users
     for (const user of users) {
-      const { password, ...userData } = user; // Extract password separately
+      const { password, departmentId, email, name, role } = user; // Extract password separately
       const { hash, salt } = await hashPassword(password);
 
       // Create a Gravatar URL based on the user's email hash
@@ -25,7 +25,10 @@ export async function GET() {
 
       await prisma.user.create({
         data: {
-          ...userData,
+          name,
+          email,
+          role: 'ADMIN',
+          departmentId,
           hash,
           salt,
           profileImage,
@@ -34,7 +37,7 @@ export async function GET() {
     }
 
     return NextResponse.json({ message: 'Seeding successful' });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Seeding error:', error.message); // Log the error message
     console.error('Error details:', error); // Log the full error object for more details
     return NextResponse.json({ error: 'Seeding failed' }, { status: 500 });

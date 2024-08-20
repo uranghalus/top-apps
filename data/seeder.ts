@@ -5,12 +5,17 @@ const department = [
   { department_name: 'Marketing' },
   { department_name: 'Sales' },
 ];
+enum Role {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+  MANAGER = 'MANAGER',
+}
 const users = [
   {
     name: 'Muhammad Fauzan',
     email: 'admin@top-app.com',
     password: 'admin123',
-    role: 'ADMIN',
+    role: Role.ADMIN,
     departmentId: 1,
   },
 ];
