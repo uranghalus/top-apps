@@ -24,14 +24,7 @@
       // This allows Serwist to type `window.serwist`.
       "@serwist/next/typings"
     ],
-    "lib": [
-      // Other libs...
-      // Add this! Doing so adds WebWorker and ServiceWorker types to the global.
-      "dom",
-      "dom.iterable",
-      "esnext",
-      "webworker"
-    ]
+    "lib": ["dom", "dom.iterable", "esnext", "webworker"]
   },
 
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

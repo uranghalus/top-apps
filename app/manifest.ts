@@ -2,8 +2,8 @@ import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Next PWA with Serwist Example',
-    short_name: 'Top Apps',
+    name: 'TOP Apps',
+    short_name: 'TOP Apps',
     // description: 'An example of how to use Serwist in Next.js',
     start_url: '/',
     display: 'standalone',
@@ -12,7 +12,7 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: '#fff',
     icons: [
       {
-        src: '/favicon.ico',
+        src: '/icons/icon-512x512.png',
         sizes: 'any',
         type: 'image/x-icon',
       },
