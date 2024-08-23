@@ -11,6 +11,11 @@ export const authconfig = {
     signOut: '/',
   },
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith('/')) return new URL(url, baseUrl).toString();
+      if (url === '/api/auth/signout') return baseUrl; // Redirect ke homepage setelah logout
+      return baseUrl;
+    },
     authorized({ request, auth }: any) {
       const protectedPaths = [
         // /\/shipping/,
