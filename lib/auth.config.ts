@@ -1,5 +1,6 @@
 import { NextAuthConfig, User } from 'next-auth';
-interface ExtendedUser extends User {
+export interface ExtendedUser extends User {
+  _id: string;
   role: 'HRD' | 'SPV' | 'USER' | 'ADMIN';
   profileImage: string;
 }
