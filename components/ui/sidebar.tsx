@@ -10,8 +10,13 @@ const Sidebar = () => {
       <div className="flex h-full max-h-screen flex-col gap-2">
         <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
           <Link href="/" className="flex items-center gap-2 font-semibold">
-            <RiApps2Fill className="h-6 w-6" />
-            <span className="">Acme Inc</span>
+            <img
+              src="/icons/icon-512x512.png"
+              className="p-1 w-11 rounded-lg shadow-lg border border-gray-200 bg-white"
+              alt="Logo"
+            />
+            {/* <RiApps2Fill className="h-6 w-6" /> */}
+            <span className="">Top Apps</span>
           </Link>
           <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
             <RiNotification4Line className="h-4 w-4" />

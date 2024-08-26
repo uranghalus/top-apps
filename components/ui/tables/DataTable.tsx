@@ -5,6 +5,7 @@ import {
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
@@ -18,10 +19,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { TablePaging } from './TablePaging';
-import { DataTableViewOptions } from './ColumnTogle';
 import { Input } from '../input';
 import {
   Select,
@@ -43,24 +42,28 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [selectedColumn, setSelectedColumn] = useState<string>(
-    columns[0].id as string
+    columns[0]?.id ? (columns[0].id as string) : ''
   );
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
-    getSortedRowModel: getSortedRowModel(),
     state: {
       sorting,
       columnFilters,
     },
   });
+
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center">
         <Input
+          className="mr-auto w-fit"
           placeholder={`Cari Data ${selectedColumn}`}
           value={
             (table.getColumn(selectedColumn)?.getFilterValue() as string) ?? ''
@@ -71,19 +74,20 @@ export function DataTable<TData, TValue>({
         />
         <Select
           value={selectedColumn}
-          onValueChange={(event: any) => setSelectedColumn(event.target.value)}
+          onValueChange={(value: string) => setSelectedColumn(value)}
         >
-          <SelectTrigger className="ml-auto">
+          <SelectTrigger className="ml-auto w-fit">
             <SelectValue placeholder="Pilih Kolom" />
           </SelectTrigger>
           <SelectContent side="bottom">
-            {table.getHeaderGroups().map((headerGroup) =>
-              headerGroup.headers.map((header) => (
-                <SelectItem key={header.id} value={header.id}>
-                  {header.column.id}
+            {table
+              .getAllColumns()
+              .filter((column) => column.getCanFilter())
+              .map((column) => (
+                <SelectItem key={column.id} value={column.id}>
+                  {column.id}
                 </SelectItem>
-              ))
-            )}
+              ))}
           </SelectContent>
         </Select>
       </div>
@@ -92,23 +96,21 @@ export function DataTable<TData, TValue>({
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows.length > 0 ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
