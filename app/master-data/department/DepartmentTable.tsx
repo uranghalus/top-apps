@@ -1,22 +1,14 @@
 'use client';
-
-import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/tables/DataTable';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { useEffect, useState } from 'react';
-import {
-  RiDeleteBin5Line,
-  RiEditBoxLine,
-  RiExpandUpDownLine,
-  RiMore2Fill,
-  RiSearchLine,
-} from 'react-icons/ri';
+import { useState } from 'react';
+import { RiSearchLine } from 'react-icons/ri';
 import useSWR, { mutate } from 'swr';
 import ModalEditDepartment from './ModalEditDepartment';
 import { TableHeader } from '@/components/ui/tables/TableHeader';
 import ModalDeleteDepartment from './ModalDeleteDepartment';
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { fetcher } from '@/lib/utils';
 
 export type Department = {
   id: number;
@@ -25,7 +17,6 @@ export type Department = {
 
 const DepartmentTable = () => {
   const { data: Departments, error } = useSWR('/api/department', fetcher);
-  const [EditDepartment, setEditDepartment] = useState<Department | null>(null);
   const handleEdit = async () => {
     await mutate('/api/department');
   };
