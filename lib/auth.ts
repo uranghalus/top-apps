@@ -3,10 +3,10 @@ import Credentials from 'next-auth/providers/credentials';
 import { prisma } from './prisma';
 import { authconfig } from './auth.config';
 import { comparePassword } from './utils/password-utils';
-
-
-export const { auth, handlers, signIn, signOut } = NextAuth({
+import { PrismaAdapter } from '@auth/prisma-adapter';
+export const authOptions = {
   ...authconfig,
+  adapter: PrismaAdapter(prisma),
   providers: [
     Credentials({
       name: 'credentials',
@@ -38,4 +38,5 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       },
     }),
   ],
-});
+};
+export const { auth, handlers, signIn, signOut } = NextAuth(authOptions);
